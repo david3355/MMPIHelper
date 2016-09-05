@@ -55,6 +55,8 @@ namespace MMPIHelper
         {
         }
 
+        public readonly static String DEFAULT_VALUE = "Z";
+
         public static MMPIDataHandler GetDataHandler(string FileName, MessageHandler MessageHandler)
         {
             if (self == null) self = new MMPIDataHandler(FileName, MessageHandler);
@@ -70,7 +72,7 @@ namespace MMPIHelper
             String q = String.Empty;
             try
             {
-                q = "CREATE TABLE mmpidata (id INTEGER, number INTEGER, PRIMARY KEY(id))";
+                q = "CREATE TABLE mmpidata (id INTEGER, number TEXT, PRIMARY KEY(id))";
                 database.ExecuteNonQuery(q);
             }
             catch (Exception e)
@@ -91,7 +93,7 @@ namespace MMPIHelper
             {
                 for (int i = 1; i <= 566; i++)
                 {
-                    q = String.Format("INSERT INTO mmpidata (id, number) VALUES ('{0}', '0')", i);
+                    q = String.Format("INSERT INTO mmpidata (id, number) VALUES ('{0}', '{1}')", i, DEFAULT_VALUE);
                     database.ExecuteNonQuery(q);
                 }
             }
@@ -101,7 +103,7 @@ namespace MMPIHelper
             }
         }
 
-        public void SaveNewNumber(int Index, int Number)
+        public void SaveNewNumber(int Index, String Number)
         {
             string q = String.Format("UPDATE mmpidata SET number='{0}' WHERE id='{1}'", Number, Index);
             try
@@ -116,7 +118,7 @@ namespace MMPIHelper
 
         public void EraseData()
         {
-            string q = String.Format("UPDATE mmpidata SET number='0' WHERE 1=1");
+            string q = String.Format("UPDATE mmpidata SET number='{0}' WHERE 1=1", DEFAULT_VALUE);
             try
             {
                 database.ExecuteNonQuery(q);
@@ -149,7 +151,7 @@ namespace MMPIHelper
         {
             foreach (DataRow row in data.Rows)
             {
-                MMPIData mmpi = new MMPIData(Convert.ToInt32(row["id"]), Convert.ToInt32(row["number"]));
+                MMPIData mmpi = new MMPIData(Convert.ToInt32(row["id"]), row["number"].ToString());
                 list.Add(mmpi);
             }
         }

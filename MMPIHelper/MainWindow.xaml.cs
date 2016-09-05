@@ -136,7 +136,8 @@ namespace MMPIHelper
         {
             userEdit = false;
             TextBox cell;
-            int num, index, last;
+            int index, last;
+            String num;
             last = -1;
             for (int i = 0; i < blocks.Children.Count; i++)
             {
@@ -145,8 +146,12 @@ namespace MMPIHelper
                     cell = blocks.Children[i] as TextBox;
                     index = int.Parse(cell.Name.Split('_')[1]);
                     num = Numbers[index - 1].Number;
-                    if (num == 1 || num == 2) cell.Text = num.ToString();
-                    else if (last == -1) last = i;
+                    if (num == MMPIDataHandler.DEFAULT_VALUE)
+                    {
+                        cell.Text = String.Empty;
+                        if (last == -1) last = i;
+                    }
+                    else if (num == "0" || num == "1" || num == "2") cell.Text = num.ToString();
                 }
             }
             if (last != -1) blocks.Children[last].Focus();
@@ -244,10 +249,21 @@ namespace MMPIHelper
                 TraversalRequest tr = new TraversalRequest(FocusNavigationDirection.Next);
                 cell.MoveFocus(tr);
             }
-            int data = 0;
-            int.TryParse(cell.Text, out data);
-            if (data == 1 || data == 2) cell.Background = green;
-            else cell.Background = red;
+            if (cell.Text.Equals("i") || cell.Text.Equals("I")) cell.Text = "1";
+            else if (cell.Text.Equals("h") || cell.Text.Equals("H")) cell.Text = "2";
+
+            String data = cell.Text;
+            
+            if (data.Equals("1") || data.Equals("2")) cell.Background = green;
+            else
+            {
+                if (!data.Equals("0"))
+                {
+                    data = MMPIDataHandler.DEFAULT_VALUE;
+                    cell.Text = String.Empty;
+                }
+                cell.Background = red;
+            }
             if (userEdit) dataHandler.SaveNewNumber(int.Parse(cell.Name.Split('_')[1]), data);
         }
 
