@@ -7,14 +7,14 @@ namespace MMPIHelper
 {
     public class MMPIData
     {
-        public MMPIData(int Index, int Number)
+        public MMPIData(int Index, String Number)
         {
             index = Index;
             number = Number;
         }
 
         private int index;
-        private int number;
+        private String number;
 
         public int Index
         {
@@ -22,12 +22,17 @@ namespace MMPIHelper
             set { index = value; }
         }        
 
-        public int Number
+        public String Number
         {
             get { return number; }
             set { number = value; }
         }
 
+
+        public override string ToString()
+        {
+            return String.Format("{0}:{1}", index, number);
+        }
 
     }
 }
