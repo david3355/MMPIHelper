@@ -29,11 +29,14 @@ namespace MMPIHelper
 
         private Brush red, green;
         private MMPIDataHandler dataHandler;
+        private Loader loader;
+        Thread thread_dbinit;
         private bool userEdit;
         private int sleepTime;
 
         private void Init()
         {
+            loader = new Loader(LoadData);
             sleepTime = 100;
             mainWin.Width = 800;
             mainWin.Height = 700;
@@ -126,6 +129,8 @@ namespace MMPIHelper
             }
         }
 
+        
+
         private void LoadData()
         {
             List<MMPIData> data = dataHandler.GetSavedData();
@@ -160,7 +165,21 @@ namespace MMPIHelper
 
         private void InitDatabase()
         {
+            panel_initdatabase.Visibility = Visibility.Visible;
+            panel_main.Visibility = Visibility.Collapsed;
+            thread_dbinit = new Thread(DataBaseInitialization);
+            thread_dbinit.Start();
+        }
+
+        private void DataBaseInitialization()
+        {
             dataHandler = MMPIDataHandler.GetDataHandler("mmpidata", Message);
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                panel_initdatabase.Visibility = Visibility.Collapsed;
+                panel_main.Visibility = Visibility.Visible;
+                loader.DatabaseInitialized();
+            }));
         }
 
         private void ClearDataCells()
@@ -274,7 +293,7 @@ namespace MMPIHelper
 
         private void mainWin_ContentRendered(object sender, EventArgs e)
         {
-            LoadData();
+            loader.ContentRendered();
         }
 
 

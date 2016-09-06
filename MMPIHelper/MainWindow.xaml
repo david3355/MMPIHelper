@@ -3,7 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MMPI Adatfelvétel" Height="350" Width="525" Name="mainWin" Icon="/MMPIHelper;component/sheet.ico" ContentRendered="mainWin_ContentRendered">
     <Grid>
-        <DockPanel LastChildFill="True">
+        <StackPanel Name="panel_initdatabase" VerticalAlignment="Center" Visibility="Collapsed">
+            <Label FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" >Adatbázis inicializálása...</Label>
+            <Label FontSize="12" HorizontalAlignment="Center" Margin="-3, -10, -4, -2" >(ez a művelet eltarthat 1-2 percig)</Label>
+            <ProgressBar Width="230" Height="25" IsIndeterminate="True"></ProgressBar>
+
+        </StackPanel>
+        <DockPanel Name="panel_main" LastChildFill="True">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="Fájl">
                     <MenuItem Name="menu_newmmpi" Header="Új MMPI adatok" Click="menu_newmmpi_Click"></MenuItem>
@@ -14,9 +20,6 @@
             </Menu>
             <Grid Name="sequence" ShowGridLines="True" DockPanel.Dock="Left">
             </Grid>
-
-
-
             <Grid Name="blocks" ShowGridLines="True" >
             </Grid>
 

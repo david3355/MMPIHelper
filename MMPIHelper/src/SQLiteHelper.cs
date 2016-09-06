@@ -102,6 +102,17 @@ public class SQLiteHelper
         Close();
     }
 
+    public void ExecuteNonQueries(string[] sqlCommands)
+    {
+        Open();
+        foreach (String q in sqlCommands)
+        {
+            cmd = new SQLiteCommand(q, sqliteCon);
+            cmd.ExecuteNonQuery();
+        }
+        Close();
+    }
+
     /// <summary>
     /// Executes a query command which returns one single value
     /// </summary>

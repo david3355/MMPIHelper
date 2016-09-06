@@ -66,6 +66,8 @@
     <Compile Include="src\keysim\KeystrokeSimulator.cs" />
     <Compile Include="src\keysim\MSDosKeyStrokeSimulator.cs" />
     <Compile Include="src\keysim\NativeWIN32.cs" />
+    <Compile Include="src\Loader.cs" />
+    <Compile Include="src\LoaderCallback.cs" />
     <Compile Include="src\MMPIData.cs" />
     <Compile Include="src\SQLiteHelper.cs" />
     <Page Include="MainWindow.xaml">

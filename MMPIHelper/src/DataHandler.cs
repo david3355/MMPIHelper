@@ -89,17 +89,19 @@ namespace MMPIHelper
         public void InitMMPIData()
         {
             string q = String.Empty;
+            List<string> queries = new List<string>();
             try
             {
                 for (int i = 1; i <= 566; i++)
                 {
                     q = String.Format("INSERT INTO mmpidata (id, number) VALUES ('{0}', '{1}')", i, DEFAULT_VALUE);
-                    database.ExecuteNonQuery(q);
+                    queries.Add(q);
                 }
+                database.ExecuteNonQueries(queries.ToArray());
             }
             catch (Exception e)
             {
-                messageHandler(String.Format("Error while executing command [{0}]. Error message: {1}", q, e.Message));
+                messageHandler(String.Format("Error while executing commands. Error message: {0}", e.Message));
             }
         }
 
